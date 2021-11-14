@@ -1,6 +1,6 @@
 # Performer Image Search Plugin
 
-A stash plugin for opening a google image search of performer names in your browser
+A stash plugin for opening a google image search of performer names in your browser and updating performer images
 
 Searching for performer images and updating them in Stash can be a repetitive and time consuming task. You have to google image search a performer name, find an image, go to the performer's Stash page, click Set Image -> From URL, copy paste the image url, and then click save.
 
