@@ -20,6 +20,9 @@ SHOW_UNTAGGED_ONLY = True
 # Name of tag to apply
 TAG_NAME = '#performer_image_selected'
 
+# Only show favorited performers
+FAVORITES_ONLY = False
+
 # Display settings
 IMAGE_WIDTH = 150
 IMAGE_HEIGHT = 200

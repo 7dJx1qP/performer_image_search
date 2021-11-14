@@ -27,6 +27,7 @@ def get_img_data(f, maxsize=(1200, 850), first=False, bytes=None):
     return ImageTk.PhotoImage(img)
 
 def scrape_image(url):
+    log.LogTrace(f"scrape_image {url}")
     scraper = cloudscraper.create_scraper()
     try:
         scraped = scraper.get(url, timeout=(3,7))
@@ -46,20 +47,32 @@ def search(db: StashDatabase):
     Clicking an image sets the performer to use the image
     """
 
+    log.LogTrace("search start")
+
     tagged_performer_ids = []
     if TAG_NAME:
+        log.LogTrace(f"selecting tag named {TAG_NAME}")
         tag = db.tags.selectone_name(TAG_NAME)
         if not tag:
+            log.LogTrace(f"tag not found. creating tag")
             db.tags.insert(TAG_NAME, get_timestamp(), get_timestamp())
         tag = db.tags.selectone_name(TAG_NAME)
         if not tag:
             raise Exception(f"Could not create tag {TAG_NAME}")
         elif SHOW_UNTAGGED_ONLY:
+            log.LogTrace(f"SHOW_UNTAGGED_ONLY=True")
             tagged_performer_ids = [performer_tag.performer_id for performer_tag in db.performers_tags.select_tag_id(tag.id)]
 
-    performers = [performer for performer in db.performers.select_favorite(1) if performer.id not in tagged_performer_ids]
+    log.LogTrace(f"FAVORITES_ONLY={FAVORITES_ONLY}")
+    if FAVORITES_ONLY:
+        performers = [performer for performer in db.performers.select_favorite(1) if performer.id not in tagged_performer_ids]
+    else:
+        rows = db.fetchall("""SELECT * FROM performers""")
+        performers = [PerformersRow().from_sqliterow(row) for row in rows]
+        performers = [performer for performer in performers if performer.id not in tagged_performer_ids]
     performers.sort(key=lambda x: x.name)
 
+    log.LogTrace(f"IMAGE_WIDTH={IMAGE_WIDTH}, IMAGE_HEIGHT={IMAGE_HEIGHT}")
     IMGSIZE = (IMAGE_WIDTH, IMAGE_HEIGHT)
 
     sg.theme('SystemDefaultForReal')
@@ -94,7 +107,10 @@ def search(db: StashDatabase):
 
     window = sg.Window('Performer Image Select', layout=layout, resizable=True,  return_keyboard_events=True, finalize=True)
 
+    log.LogTrace(f"window created")
+
     def set_performer(performer_index):
+        log.LogTrace(f"set_performer {performer_index}")
         performer_index = performer_index % len(performers)
         performer = performers[performer_index]
 
@@ -115,6 +131,7 @@ def search(db: StashDatabase):
     performer_index, performer, scraped_performer_image = set_performer(0)
 
     def tag_performer():
+        log.LogTrace(f"tag_performer")
         if tag and TAG_PERFORMERS:
             tag_ids = [performer_tag.tag_id for performer_tag in db.performers_tags.select_performer_id(performer.id)]
             if tag.id not in tag_ids:
@@ -169,6 +186,7 @@ json_input = read_json_input()
 mode_arg = json_input['args']['mode']
 
 try:
+    log.LogTrace(f"opening database {DATABASE_PATH}")
     db = StashDatabase(DATABASE_PATH)
 except Exception as e:
     log.LogError(str(e))
