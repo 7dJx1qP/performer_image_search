@@ -1,0 +1,13 @@
+name: Performer Image Search
+description: Search google for performer images
+version: 0.1
+url: https://github.com/7dJx1qP
+exec:
+  - python
+  - "{pluginDir}/performer_image_search.py"
+interface: raw
+tasks:
+  - name: Search google for performer images
+    description: Search google for performer images
+    defaultArgs:
+      mode: search
