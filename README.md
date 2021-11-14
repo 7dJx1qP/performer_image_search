@@ -14,6 +14,8 @@ This plugin provides a GUI to simplify this task, so you can google image search
 
 The current performer image is shown on top. Click `Search` and a new browser window/tab will pop up going to a google image search of the term `<performer name> porn`. Copy/paste the url of the image you want to use into the text box at the bottom and then click `Download`. If the image is successfully downloaded, it will show up at the bottom. Then click `Set Image` to update stash to use this performer image.
 
+*Note: Sometimes it will fail to download certain image urls. If a download fails, it will show up in the logs and you won't see the image in the GUI. In that case, you'll just have to download and update the image in stash the normal way*
+
 ## Requirements
 
 Python 3.6+
