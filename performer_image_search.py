@@ -165,7 +165,12 @@ def search(db: StashDatabase):
         elif event =='download_image' and values['download_url']:
             scraped_performer_image = scrape_image(values['download_url'])
             if scraped_performer_image:
-                scrape_image_el.update(data=get_img_data(None, bytes=scraped_performer_image, maxsize=IMGSIZE, first=True))
+                try:
+                    scrape_image_el.update(data=get_img_data(None, bytes=scraped_performer_image, maxsize=IMGSIZE, first=True))
+                except:
+                    sg.popup('Image failed to load.')
+                    scraped_performer_image = None
+                    scrape_image_el.update()
             else:
                 scrape_image_el.update()
         elif event == 'set_image':
