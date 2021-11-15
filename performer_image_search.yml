@@ -1,6 +1,6 @@
 name: Performer Image Search
 description: Search google for performer images
-version: 0.1
+version: 0.2
 url: https://github.com/7dJx1qP
 exec:
   - python
