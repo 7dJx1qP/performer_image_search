@@ -169,14 +169,17 @@ def search(db: StashDatabase):
             else:
                 scrape_image_el.update()
         elif event == 'set_image':
-            performer_image = db.performers_image.selectone_performer_id(performer.id)
-            if performer_image:
-                db.execute("""UPDATE performers_image SET image = ? WHERE performer_id = ?""", (scraped_performer_image, performer.id))
+            if scraped_performer_image:
+                performer_image = db.performers_image.selectone_performer_id(performer.id)
+                if performer_image:
+                    db.execute("""UPDATE performers_image SET image = ? WHERE performer_id = ?""", (scraped_performer_image, performer.id))
+                else:
+                    db.performers_image.insert(performer.id, scraped_performer_image)
+                log.LogInfo(f'Set {performer.name} image to {values["download_url"]}')
+                tag_performer()
+                performer_index, performer, scraped_performer_image = set_performer(performer_index + 1)
             else:
-                db.performers_image.insert(performer.id, scraped_performer_image)
-            log.LogInfo(f'Set {performer.name} image to {values["download_url"]}')
-            tag_performer()
-            performer_index, performer, scraped_performer_image = set_performer(performer_index + 1)
+                sg.popup('No performer image downloaded. You must enter an image url and click download.')
 
 def read_json_input():
     json_input = sys.stdin.read()
