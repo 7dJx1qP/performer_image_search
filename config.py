@@ -20,6 +20,9 @@ SHOW_UNTAGGED_ONLY = True
 # Name of tag to apply
 TAG_NAME = '#performer_image_selected'
 
+# Only show performers missing an image
+SHOW_MISSING_IMAGE_ONLY = False
+
 # Only show favorited performers
 FAVORITES_ONLY = False
 

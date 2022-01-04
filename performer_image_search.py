@@ -70,6 +70,12 @@ def search(db: StashDatabase):
         rows = db.fetchall("""SELECT * FROM performers""")
         performers = [PerformersRow().from_sqliterow(row) for row in rows]
         performers = [performer for performer in performers if performer.id not in tagged_performer_ids]
+
+    log.LogTrace(f"SHOW_MISSING_IMAGE_ONLY={SHOW_MISSING_IMAGE_ONLY}")
+    if SHOW_MISSING_IMAGE_ONLY:
+        performer_ids_with_image = [PerformersImageRow().from_sqliterow(row).performer_id for row in db.performers_image.select()]
+        performers = [performer for performer in performers if performer.id not in performer_ids_with_image]
+
     performers.sort(key=lambda x: x.name)
 
     log.LogTrace(f"IMAGE_WIDTH={IMAGE_WIDTH}, IMAGE_HEIGHT={IMAGE_HEIGHT}")

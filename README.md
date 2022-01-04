@@ -47,6 +47,12 @@ Run `pip install -r requirements.txt` in the `performer_image_search` folder
 * `TAG_NAME`
   Name of tag to use if `TAG_PERFORMERS = True` *Note: tag will be created if it does not exist*
 
+* `SHOW_MISSING_IMAGE_ONLY`
+  Whether or not to show performers that have an image
+
+* `FAVORITES_ONLY`
+  Whether or not to show favorited performers
+
 ## Hotkeys
 
 * Previous Performer `A`, `Left Arrow`
