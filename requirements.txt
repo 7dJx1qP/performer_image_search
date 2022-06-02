@@ -1,4 +1,4 @@
 cloudscraper==1.2.58
 Pillow==8.4.0
 PySimpleGUI==4.53.0
-pystashlib==0.2.5
+pystashlib==0.2.8
